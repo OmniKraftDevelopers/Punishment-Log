@@ -1,32 +1,30 @@
 package me.killerkoda13.punishplus;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-
-
-
-
-
-import me.killerkoda13.punishplus.dbutils.DatabaseUtilities;
-
+import me.killerkoda13.punishplus.Database.DatabaseUtilities;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class PunishPlus extends JavaPlugin{
+
+	public static Plugin plugin;
+	HashMap<Player, String> map = new HashMap<Player, String>();
+
+	public static Plugin getPlugin() {
+		return plugin;
+	}
 
 	@Override
 	public void onEnable()
 	{
-
+		plugin = this;
 	}
 
 	@Override
@@ -35,18 +33,14 @@ public class PunishPlus extends JavaPlugin{
 
 	}
 
-	HashMap<Player, String> map = new HashMap<Player, String>();
-
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
 	{
 
 		if(cmd.getName().equalsIgnoreCase("grab"))
 		{
-
-
-			if(map.containsKey((Player)sender))
+			if (map.containsKey(sender))
 			{
-				ArrayList<String> info = DatabaseUtilities.getPlayer(map.get((Player)sender), Integer.parseInt(args[0]));
+				ArrayList<String> info = DatabaseUtilities.getPlayer(map.get(sender), Integer.parseInt(args[0]));
 				int index = 0;
 				for(String item : info)
 				{
