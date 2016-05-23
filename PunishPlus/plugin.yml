@@ -1,0 +1,11 @@
+name: PunishPlus
+main: me.killerkoda13.punishplus.PunishPlus
+version: 0.0.1
+description: PunishPlus
+commands:
+   grab:
+      description: Better Vanish
+      usage: /<command>
+   gput:
+      description: Better Vanish
+      usage: /<command>
