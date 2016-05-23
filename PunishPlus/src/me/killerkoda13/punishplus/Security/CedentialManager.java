@@ -59,7 +59,6 @@ public class CedentialManager {
             String serverurl = filereader.readLine();
             filereader.close();
             return "jdbc:mysql://" + serverurl;
-
         } catch (IOException e) {
             e.printStackTrace();
         }
