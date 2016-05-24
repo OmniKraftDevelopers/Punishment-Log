@@ -1,5 +1,7 @@
 package me.killerkoda13.punishplus.Database;
 
+import me.killerkoda13.punishplus.Punishment.Punishment;
+
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -14,7 +16,7 @@ public class DatabaseUtilities {
     public static Connection connection;
     public static boolean connected;
 
-    public static void putPlayer(String name, punishment p, String UUID, String reason, String time, String banningstaff) throws SQLException {
+    public static void putPlayer(String name, Punishment.PunishmentType p, String UUID, String reason, String time, String banningstaff) throws SQLException {
         String url = "censored";
         String username = "<censored>";
         String password = "<censored>";
@@ -23,19 +25,19 @@ public class DatabaseUtilities {
 
         Connection connection = DriverManager.getConnection(url, username, password);
         switch (p) {
-            case Ban:
+            case PERMBAN:
                 PreparedStatement statement = connection.prepareStatement("INSERT INTO `punishment_table`(`Name`, `UUID`, `Banning Staff`, `Reason`, `Punishment`, `Duration`) VALUES ('" + name + "','" + UUID + "','" + banningstaff + "','" + reason + "','" + "ban" + "','" + time + "')");
                 statement.executeUpdate();
                 break;
-            case Tempban:
+            case TEMPBAN:
                 PreparedStatement statement1 = connection.prepareStatement("INSERT INTO `punishment_table`(`Name`, `UUID`, `Banning Staff`, `Reason`, `Punishment`, `Duration`) VALUES (" + name + "," + UUID + "," + banningstaff + "," + reason + "," + "tempban" + "," + time + ")");
                 statement1.executeUpdate();
                 break;
-            case kick:
+            case KICK:
                 PreparedStatement statement11 = connection.prepareStatement("INSERT INTO `punishment_table`(`Name`, `UUID`, `Banning Staff`, `Reason`, `Punishment`, `Duration`) VALUES (" + name + "," + UUID + "," + banningstaff + "," + reason + "," + "kick" + "," + time + ")");
                 statement11.executeUpdate();
                 break;
-            case mute:
+            case MUTE:
                 PreparedStatement statement111 = connection.prepareStatement("INSERT INTO `punishment_table`(`Name`, `UUID`, `Banning Staff`, `Reason`, `Punishment`, `Duration`) VALUES (" + name + "," + UUID + "," + banningstaff + "," + reason + "," + "kick" + "," + time + ")");
                 statement111.executeUpdate();
                 break;
@@ -120,14 +122,5 @@ public class DatabaseUtilities {
         return values;
 
     }
-
-    public enum punishment {
-        Ban,
-        Tempban,
-        kick,
-        mute
-    }
-
-
 }
 

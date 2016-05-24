@@ -1,6 +1,7 @@
 package me.killerkoda13.punishplus;
 
 import me.killerkoda13.punishplus.Database.DatabaseUtilities;
+import me.killerkoda13.punishplus.Punishment.Punishment;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -8,13 +9,19 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Level;
 
 public class PunishPlus extends JavaPlugin{
 
 	public static Plugin plugin;
+	private static File usernamefile = new File(PunishPlus.getPlugin().getDataFolder() + "/credentials/" + "username.cred");
+	private static File passwordfile = new File(PunishPlus.getPlugin().getDataFolder() + "/credentials/" + "password.cred");
+	private static File serverurlfile = new File(PunishPlus.getPlugin().getDataFolder() + "/credentials/" + "serverurl.cred");
 	HashMap<Player, String> map = new HashMap<Player, String>();
 
 	public static Plugin getPlugin() {
@@ -22,9 +29,37 @@ public class PunishPlus extends JavaPlugin{
 	}
 
 	@Override
-	public void onEnable()
-	{
+	public void onEnable() {
 		plugin = this;
+
+		if (this.getDataFolder().exists() != true) {
+			this.getDataFolder().mkdirs();
+			if (new File(this.getDataFolder() + "/credentials/").exists() != true) {
+				Bukkit.getLogger().log(Level.INFO, "Credentials folder was not found. Generating one now.");
+				new File(this.getDataFolder() + "/credentials/").mkdirs();
+				if (usernamefile.exists() != true) {
+					try {
+						usernamefile.createNewFile();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+				if (passwordfile.exists() != true) {
+					try {
+						passwordfile.createNewFile();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+				if (serverurlfile.exists() != true) {
+					try {
+						serverurlfile.createNewFile();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}
 	}
 
 	@Override
@@ -35,7 +70,6 @@ public class PunishPlus extends JavaPlugin{
 
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
 	{
-
 		if(cmd.getName().equalsIgnoreCase("grab"))
 		{
 			if (map.containsKey(sender))
@@ -80,7 +114,7 @@ public class PunishPlus extends JavaPlugin{
 			{
 			case "ban":
 				try {
-					DatabaseUtilities.putPlayer(args[0], DatabaseUtilities.punishment.Ban, Bukkit.getPlayer(args[0]).getUniqueId().toString(), args[2], args[3], sender.getName());
+					DatabaseUtilities.putPlayer(args[0], Punishment.PunishmentType.PERMBAN, Bukkit.getPlayer(args[0]).getUniqueId().toString(), args[2], args[3], sender.getName());
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -88,7 +122,7 @@ public class PunishPlus extends JavaPlugin{
 				break;
 			case "tempban":
 				try {
-					DatabaseUtilities.putPlayer(args[0], DatabaseUtilities.punishment.Tempban, Bukkit.getPlayer(args[0]).getUniqueId().toString(), args[2], args[3], sender.getName());
+					DatabaseUtilities.putPlayer(args[0], Punishment.PunishmentType.TEMPBAN, Bukkit.getPlayer(args[0]).getUniqueId().toString(), args[2], args[3], sender.getName());
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -96,7 +130,7 @@ public class PunishPlus extends JavaPlugin{
 				break;	
 			case "kick":
 				try {
-					DatabaseUtilities.putPlayer(args[0], DatabaseUtilities.punishment.kick, Bukkit.getPlayer(args[0]).getUniqueId().toString(), args[2], args[3], sender.getName());
+					DatabaseUtilities.putPlayer(args[0], Punishment.PunishmentType.KICK, Bukkit.getPlayer(args[0]).getUniqueId().toString(), args[2], args[3], sender.getName());
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -104,7 +138,7 @@ public class PunishPlus extends JavaPlugin{
 				break;
 			case "mute":
 				try {
-					DatabaseUtilities.putPlayer(args[0], DatabaseUtilities.punishment.mute, Bukkit.getPlayer(args[0]).getUniqueId().toString(), args[2], args[3], sender.getName());
+					DatabaseUtilities.putPlayer(args[0], Punishment.PunishmentType.MUTE, Bukkit.getPlayer(args[0]).getUniqueId().toString(), args[2], args[3], sender.getName());
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
