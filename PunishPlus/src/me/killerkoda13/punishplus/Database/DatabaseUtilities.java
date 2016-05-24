@@ -1,6 +1,7 @@
 package me.killerkoda13.punishplus.Database;
 
 import me.killerkoda13.punishplus.Punishment.Punishment;
+import me.killerkoda13.punishplus.Security.CredentialManager;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -16,38 +17,38 @@ public class DatabaseUtilities {
     public static Connection connection;
     public static boolean connected;
 
-    public static void putPlayer(String name, Punishment.PunishmentType p, String UUID, String reason, String time, String banningstaff) throws SQLException {
-        String url = "censored";
-        String username = "<censored>";
-        String password = "<censored>";
+    public static void putPlayer(String name, Punishment.PunishmentType p, String UUID, String reason, String time, String banningstaff, String ban_time, String ipaddress) throws SQLException {
+        String url = CredentialManager.getServer();
+        String username = CredentialManager.getUserName();
+        String password = CredentialManager.getPassword();
 
         ArrayList<String> values = new ArrayList<String>();
 
         Connection connection = DriverManager.getConnection(url, username, password);
         switch (p) {
             case PERMBAN:
-                PreparedStatement statement = connection.prepareStatement("INSERT INTO `punishment_table`(`Name`, `UUID`, `Banning Staff`, `Reason`, `Punishment`, `Duration`) VALUES ('" + name + "','" + UUID + "','" + banningstaff + "','" + reason + "','" + "ban" + "','" + time + "')");
+                PreparedStatement statement = connection.prepareStatement("INSERT INTO `punishment_table`(`Name`, `UUID`, `Banning Staff`, `Reason`, `Punishment`, `Duration`, `CaseID`, `ip address`, `ban_time`) VALUES ('" + name + "','" + UUID + "','" + banningstaff + "','" + reason + "','" + "ban" + "','" + time + ", UUID_SHORT()," + ipaddress + "," + ban_time + ")");
                 statement.executeUpdate();
                 break;
             case TEMPBAN:
-                PreparedStatement statement1 = connection.prepareStatement("INSERT INTO `punishment_table`(`Name`, `UUID`, `Banning Staff`, `Reason`, `Punishment`, `Duration`) VALUES (" + name + "," + UUID + "," + banningstaff + "," + reason + "," + "tempban" + "," + time + ")");
+                PreparedStatement statement1 = connection.prepareStatement("INSERT INTO `punishment_table`(`Name`, `UUID`, `Banning Staff`, `Reason`, `Punishment`, `Duration`, `CaseID`, `ip address`, `ban_time`) VALUES (" + name + "," + UUID + "," + banningstaff + "," + reason + "," + "tempban" + "," + time + ", UUID_SHORT()," + ipaddress + "," + ban_time + ")");
                 statement1.executeUpdate();
                 break;
             case KICK:
-                PreparedStatement statement11 = connection.prepareStatement("INSERT INTO `punishment_table`(`Name`, `UUID`, `Banning Staff`, `Reason`, `Punishment`, `Duration`) VALUES (" + name + "," + UUID + "," + banningstaff + "," + reason + "," + "kick" + "," + time + ")");
+                PreparedStatement statement11 = connection.prepareStatement("INSERT INTO `punishment_table`(`Name`, `UUID`, `Banning Staff`, `Reason`, `Punishment`, `Duration`, `CaseID`, `ip address`, `ban_time`) VALUES (" + name + "," + UUID + "," + banningstaff + "," + reason + "," + "kick" + "," + time + ", UUID_SHORT()," + ipaddress + "," + ban_time + ")");
                 statement11.executeUpdate();
                 break;
             case MUTE:
-                PreparedStatement statement111 = connection.prepareStatement("INSERT INTO `punishment_table`(`Name`, `UUID`, `Banning Staff`, `Reason`, `Punishment`, `Duration`) VALUES (" + name + "," + UUID + "," + banningstaff + "," + reason + "," + "kick" + "," + time + ")");
+                PreparedStatement statement111 = connection.prepareStatement("INSERT INTO `punishment_table`(`Name`, `UUID`, `Banning Staff`, `Reason`, `Punishment`, `Duration`, `CaseID`, `ip address`, `ban_time`) VALUES (" + name + "," + UUID + "," + banningstaff + "," + reason + "," + "kick" + "," + time + ", UUID_SHORT()," + ipaddress + "," + ban_time + ")");
                 statement111.executeUpdate();
                 break;
         }
     }
 
     public static ArrayList<String> getPlayer(String name) {
-        String url = "censored";
-        String username = "censored";
-        String password = "censored";
+        String url = CredentialManager.getServer();
+        String username = CredentialManager.getUserName();
+        String password = CredentialManager.getPassword();
 
         ArrayList<String> values = new ArrayList<String>();
 
@@ -84,9 +85,9 @@ public class DatabaseUtilities {
     }
 
     public static ArrayList<String> getPlayer(String name, int page) {
-        String url = "censored";
-        String username = "censored";
-        String password = "censored";
+        String url = CredentialManager.getServer();
+        String username = CredentialManager.getUserName();
+        String password = CredentialManager.getPassword();
 
         ArrayList<String> values = new ArrayList<String>();
 

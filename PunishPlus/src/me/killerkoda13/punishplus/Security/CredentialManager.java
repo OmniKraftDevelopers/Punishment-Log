@@ -7,7 +7,7 @@ import java.io.*;
 /**
  * Created by Alex on 5/23/2016.
  */
-public class CedentialManager {
+public class CredentialManager {
 
     private static BufferedReader filereader;
     private static File usernamefile = new File(PunishPlus.getPlugin().getDataFolder() + "/credentials/" + "username.cred");
