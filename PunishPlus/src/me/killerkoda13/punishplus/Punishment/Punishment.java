@@ -1,5 +1,9 @@
 package me.killerkoda13.punishplus.Punishment;
 
+import me.killerkoda13.punishplus.Database.DatabaseUtilities;
+
+import java.sql.SQLException;
+
 /**
  * Created by Alex on 5/23/2016.
  */
@@ -79,6 +83,11 @@ public class Punishment {
     }
 
     public void upload() {
+        try {
+            DatabaseUtilities.putPlayer(getPlayer(), getPunishment(), getUUID(), getMessage(), getDuration(), getBanningStaff(), getTimeOfBan(), getIpAddress());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public enum PunishmentType {
